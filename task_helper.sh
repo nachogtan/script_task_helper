@@ -161,11 +161,11 @@ while [ $opcion != "30" ]; do
     echo "2. Crear archivos con nano"
     echo "3. Crear archivos con gedit"
     echo "4. Instalar herramientas de red (samba)"
-    echo "5. Instalar herramientas de grupos"
+    echo "5. Listar procesos activos"
     echo "6. Visualizar carpetas y archivos"
     echo "7. Asignar permisos"
     echo "8. Visualiza calendario"
-    echo "9. Visualizar vaquita simpática"
+    echo "9. Visualiza vaquita simpática"
     echo "10. Manual de un comando"
     echo "11. Mostrar archivos sin posibilidad de editarlo"
     echo "12. Información de un archivo especifico"
@@ -194,7 +194,7 @@ while [ $opcion != "30" ]; do
 
     case $opcion in 
         1)
-            echo "Su version de linux es: "
+            echo "Su versión de linux es: "
             cat /etc/os-release
             ;;
         2)
@@ -218,17 +218,17 @@ while [ $opcion != "30" ]; do
             echo "Samba se has instalado correctamente!"
             ;;
         5)
-            sudo apt update && sudo apt install build-essential -y
-            echo "Herramientas de grupo instaladas"
+            echo "Listando procesos activos (presiona 'q' para salir)..."
+	    top
             ;;
         6)
             echo "Visualiza carpeta y archivos"
             ls -l
             ;;
         7)
-            read -p "¿A que archivo que archivo deseas asignarle permisos?: " archivo
-            read -p "¿A quien deseas darle permisos?. Selecciona u, g, o (usuario=u, grupo=g u otros=o):" quien
-            read -p "¿Que permisos deseas agregar?. Selecciona r, w, x (read=r, write=w, execute=x o combinacion como rwx):" permisos
+            read -p "¿A qué archivo que archivo deseas asignarle permisos?: " archivo
+            read -p "¿A quién deseas darle permisos?. Selecciona u, g, o (usuario=u, grupo=g u otros=o):" quien
+            read -p "¿Qué permisos deseas agregar?. Selecciona r, w, x (read=r, write=w, execute=x o combinacion como rwx):" permisos
 
             if [ ! -e "$archivo" ]; then
                 echo "El archivo '$archivo' no existe"
@@ -236,7 +236,7 @@ while [ $opcion != "30" ]; do
             fi
 
             if [[ "$quien" != "u" && "$quien" != "g" && "$quien" != "o" ]]; then
-                echo "❌ Debes seleccionar una opción válida: u (usuario), g (grupo) o o (otros)."
+                echo "Debes seleccionar una opción válida: u (usuario), g (grupo) o o (otros)."
                 break
             fi
 
@@ -251,14 +251,14 @@ while [ $opcion != "30" ]; do
         9)
             verificar_instalar cowsay
 
-            read -p "¿Que quieres que diga la vaca? " frase
+            read -p "¿Qué quieres que diga la vaca? " frase
             cowsay "$frase"
             ;;
         10)
-            read -p "¿El manual de que comando quieres ver? " comando
+            read -p "¿El manual de qué comando quieres consultar? " comando
 
             if ! command -v "$comando" >/dev/null 2>&1; then
-                echo "El comando '$comando' no existe e el sistema o no está instalado"
+                echo "El comando '$comando' no existe en el sistema o no está instalado"
                 break
             else
                 man "$comando"
@@ -266,7 +266,7 @@ while [ $opcion != "30" ]; do
 
             ;;
         11)
-            read -p "¿Que archivo quieres leer? " archivo
+            read -p "¿Qué archivo quieres leer? " archivo
 
             if [ ! -e "$archivo" ]; then
                 echo "El archivo '$archivo' no existe!"
@@ -287,8 +287,8 @@ while [ $opcion != "30" ]; do
             fi
             ;;
         13)
-            read -p "¿Que archivo quieres vincular " arch_vinc
-            read -p "¿A que directorio deseas vincularlo? " dir_vinc
+            read -p "¿Qué archivo quieres vincular " arch_vinc
+            read -p "¿A qué directorio deseas vincularlo? " dir_vinc
 
             if [ ! -e "$arch_vinc" ]; then
                 echo "El archivo '$arch_vinc' no existe."
@@ -318,24 +318,24 @@ while [ $opcion != "30" ]; do
             ;;
         16)
             echo "Crea un archivo"
-            read -p "¿Que nombre quieres darle a tu archivo? " nombre_archivo
-            read -p "¿Que extension quieres que tenga (tipo de archivo)? " extension
+            read -p "¿Qué nombre quieres darle a tu archivo? " nombre_archivo
+            read -p "¿Qué extension quieres que tenga (tipo de archivo)? " extension
             touch "$nombre_archivo.$extension"
             ls -l
             ;;
         17)
             echo "Agrega usuario"
-            read -p "¿Que usuario quieres agregar? " usuario
+            read -p "¿Qué usuario quieres agregar? " usuario
             sudo adduser "$usuario"
             ;;
         18)
             echo "Agrega un grupo"
-            read -p "¿Que grupo quieres crear? " grupo
+            read -p "¿Qué grupo quieres crear? " grupo
             sudo addgroup "$grupo"
             ;;
         19)
             echo "Copia un directorio"
-            read -p "¿Que directorio deseas copiar? " dir_origen
+            read -p "¿Qué directorio deseas copiar? " dir_origen
             read -p "¿Donde deseas copiarlo? " dir_destino
 
             if [ ! -d "$dir_origen" ]; then
@@ -357,7 +357,7 @@ while [ $opcion != "30" ]; do
             ;;
         21)
             echo "Elimina archivo"
-            read -p "¿Que archivo deseas aliminar? " arch_eliminar
+            read -p "¿Qué archivo deseas aliminar? " arch_eliminar
             if [ ! -f "$arch_eliminar" ]; then
                 echo "El archivo no existe"
             else
@@ -366,8 +366,8 @@ while [ $opcion != "30" ]; do
             ;;
         22)
             echo "Agrega usuario a grupo"
-            read -p "¿Que usuario quieres agregar? " user_agregar
-            read -p "¿A que grupo lo quieres agregar? " grupo_agregar
+            read -p "¿Qué usuario quieres agregar? " user_agregar
+            read -p "¿A qué grupo lo quieres agregar? " grupo_agregar
             sudo usermod -aG "$grupo_agregar" "$user_agregar"
             ;;
         23)
@@ -375,7 +375,7 @@ while [ $opcion != "30" ]; do
             cat /etc/passwd
             ;;
         24)
-            exho "Listando grupos"
+            echo "Listando grupos"
             cat /etc/group
             ;;
         25)
