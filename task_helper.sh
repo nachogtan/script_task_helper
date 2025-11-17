@@ -1,4 +1,58 @@
 #!/bin/bash
+
+# -------------------------------------------------------------------------------
+# Inicializamos variable de CI
+CI_MODE="false"
+# -------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------
+# Flags CI/CD
+for arg in "$@"; do
+    case "$arg" in
+        --non-interactive|--ci)
+            CI_MODE="true"
+            unset PROMPT_COMMAND
+            unset PS1
+            ;;
+        --version)
+            echo "$(basename "$0") version 1.0"
+            exit 0
+            ;;
+        --help|-h)
+            echo "Usage: $0 [--non-interactive|--ci] [--version] [--help]"
+            echo "Cuando se ejecuta con --ci, el script imprime información básica y sale (ideal para pruebas de CI)."
+            exit 0
+            ;;
+    esac
+done
+
+# -------------------------------------------------------------------------------
+# Configuración de Bash
+if [[ "$CI_MODE" == "true" ]]; then
+    # Modo CI: no debug (-x) para no spamear logs en GitHub Actions
+    set -euo pipefail
+else
+    # Desarrollo local: debug activado
+    set -euxo pipefail
+fi
+
+# -------------------------------------------------------------------------------
+# Información rápida y salida si estamos en modo CI
+if [[ "$CI_MODE" == "true" ]]; then
+    echo "CI mode: non-interactive run"
+    echo "script: $(basename "$0")"
+    echo "bash: $(bash --version | head -n1)"
+    
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        echo "os: ${NAME:-Unknown} ${VERSION:-}"
+    fi
+
+    exit 0
+fi
+
+# ------------------------------------------------------------------------------
+
 # ==============================================================================
 # TÍTULO: Asistente de Tareas de SysAdmin para Linux (APT-based)
 # AUTOR: nachogtan
@@ -32,15 +86,6 @@
 # set -o pipefail: El código de retorno de un pipeline es el del último
 #                  comando que falló.
 # ==============================================================================
-
-# Configuración de Bash
-if [[ "$CI_MODE" == "true" ]]; then
-    # Modo CI: no debug (-x) para no spamear logs en GitHub Actions
-    set -euo pipefail
-else
-    # Desarrollo local: debug activado
-    set -euxo pipefail
-fi
 
 #-------------------------------------------------------------------------------
 
@@ -98,40 +143,6 @@ FIN_LOGO
 echo ""
 read -p "Presione [Enter] para comenzar"
 clear
-
-# Flags CI/CD
-for arg in "$@"; do
-    case "$arg" in
-        --non-interactive|--ci)
-            unset PROMPT_COMMAND
-            unset PS1
-
-            echo "CI mode: non-interactive run"
-            echo "script: $(basename "$0")"
-            echo "bash: $(bash --version | head -n1)"
-            
-            # Imprimir información básica del OS
-            if [ -f /etc/os-release ]; then
-                . /etc/os-release
-                echo "os: ${NAME:-Unknown} ${VERSION:-}"
-            fi
-            
-            # salimos con éxito.
-            exit 0
-            ;;
-        --version)
-            echo "$(basename "$0") version 1.0"
-            exit 0
-            ;;
-        --help|-h)
-            echo "Usage: $0 [--non-interactive|--ci] [--version] [--help]"
-            echo "Cuando se ejecuta con --ci, el script imprime información básica y sale (ideal para pruebas de CI)."
-            exit 0
-            ;;
-    esac
-done
-
-
 
 # Función de  verificación de programa. Comprueba si esta instalado, si no lo esta, lo instala
 verificar_instalar() {
