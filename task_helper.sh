@@ -33,7 +33,16 @@
 #                  comando que falló.
 # ==============================================================================
 
-set -euxo pipefail
+# Configuración de Bash
+if [[ "$CI_MODE" == "true" ]]; then
+    # Modo CI: no debug (-x) para no spamear logs en GitHub Actions
+    set -euo pipefail
+else
+    # Desarrollo local: debug activado
+    set -euxo pipefail
+fi
+
+#-------------------------------------------------------------------------------
 
 cat << "FIN_LOGO"
 ========================================================================================
