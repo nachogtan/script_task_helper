@@ -1,0 +1,10 @@
+# Todos los scripts de bash son texto, usar saltos de línea LF
+*.sh text eol=lf
+
+# Archivos de config
+*.conf text eol=lf
+
+# Ignora diffs en binarios
+.png binary
+.jpg binary
+.gif binary
