@@ -104,7 +104,7 @@ for arg in "$@"; do
                 echo "os: ${NAME:-Unknown} ${VERSION:-}"
             fi
             
-            # Esto es lo más importante: Si estamos en modo CI, salimos con éxito.
+            # salimos con éxito.
             exit 0
             ;;
         --version)
