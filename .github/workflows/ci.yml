@@ -1,0 +1,25 @@
+name: CI for Task Helper
+
+# Cuando correr el workflow
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Chequear el repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configurar bash (ya viene en ubuntu-latest)
+      - name: Set bash permissions
+        run: chmod +x task_helper.sh
+
+      # 3. Ejecutar script en modo CI/non-interactive
+      - name: Run task_helper.sh in CI mode
+        run: ./task_helper.sh --non-interactive
