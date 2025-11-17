@@ -1,6 +1,5 @@
 name: CI for Task Helper
 
-# Cuando correr el workflow
 on:
   push:
     branches: [ main ]
@@ -16,10 +15,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Configurar bash (ya viene en ubuntu-latest)
+      # 2. Fix: remover PS1 y PROMPT_COMMAND para evitar errores con __git_ps1
+      - name: Clean runner environment
+        run: |
+          unset PROMPT_COMMAND
+          unset PS1
+
+      # 3. Dar permisos de ejecución
       - name: Set bash permissions
         run: chmod +x task_helper.sh
 
-      # 3. Ejecutar script en modo CI/non-interactive
+      # 4. Ejecutar script en modo CI
       - name: Run task_helper.sh in CI mode
-        run: ./task_helper.sh --non-interactive
+        run: ./task_helper.sh --ci
