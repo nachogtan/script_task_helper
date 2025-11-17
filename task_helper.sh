@@ -33,7 +33,7 @@
 #                  comando que falló.
 # ==============================================================================
 
-set -euo pipefail
+set -euxo pipefail
 
 cat << "FIN_LOGO"
 ========================================================================================
@@ -94,6 +94,9 @@ clear
 for arg in "$@"; do
     case "$arg" in
         --non-interactive|--ci)
+            unset PROMPT_COMMAND
+            unset PS1
+
             echo "CI mode: non-interactive run"
             echo "script: $(basename "$0")"
             echo "bash: $(bash --version | head -n1)"
