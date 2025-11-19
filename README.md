@@ -2,8 +2,6 @@
 
 **Bilingual README: English / Español**
 
-<img src="./portada_app.png">
-
 ---
 
 ## 🇬🇧 English
